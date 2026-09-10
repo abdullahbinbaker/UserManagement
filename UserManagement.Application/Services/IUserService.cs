@@ -1,12 +1,12 @@
-﻿using UserManagement.Domain.Entities;
+﻿using UserManagement.Application.DTOs;
 
 namespace UserManagement.Application.Services
 {
     public interface IUserService
     {
-        bool CreateUser(User user);
-        User? GetUserInfo(long socialIdFK);
-        bool EditUser(User user);
+        bool CreateUser(UserDto userDto);
+        UserDto? GetUserInfo(long socialIdFK);
+        bool EditUser(UserDto userDto);
         bool RemoveUser(long socialIdFK);
     }
 }

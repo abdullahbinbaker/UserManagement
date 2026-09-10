@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using UserManagement.Application.DTOs;
 using UserManagement.Application.Services;
-using UserManagement.Domain.Entities;
 namespace UserManagement.Controllers;
 
 [ApiController]
+[AllowAnonymous]
 [Route("api/[controller]")]
 public class UsersController : ControllerBase
 {
@@ -14,7 +16,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult CreateUser(User user)
+    public IActionResult CreateUser(UserDto user)
     {
         var result = _userService.CreateUser(user);
         if (result == false)
@@ -34,7 +36,7 @@ public class UsersController : ControllerBase
         return Ok(user);
     }
     [HttpPut]
-    public IActionResult EditUser(User user)
+    public IActionResult EditUser(UserDto user)
     {
         var result = _userService.EditUser(user);
         if (result == false)

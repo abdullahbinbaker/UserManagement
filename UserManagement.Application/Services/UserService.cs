@@ -1,30 +1,40 @@
 ﻿using UserManagement.Domain.Entities;
 using UserManagement.Domain.Repositories;
-
+using UserManagement.Application.DTOs;
+using AutoMapper;
 namespace UserManagement.Application.Services
 {
     public class UserService : IUserService
     {
         public readonly IUserRepository _userRepository;
-        public UserService(IUserRepository userRepository)
+        private readonly IMapper _mapper;
+        public UserService(IUserRepository userRepository, IMapper mapper)
         {
             _userRepository = userRepository;
+            _mapper = mapper;
         }
 
-        public bool CreateUser(User user)
+        public bool CreateUser(UserDto userDto)
         {
+            var user = _mapper.Map<User>(userDto); 
             _userRepository.AddUser(user);
             return true;
         }
 
-        public User? GetUserInfo(long socialIdFK)
+        public UserDto? GetUserInfo(long socialIdFK)
         {
             var user = _userRepository.GetUser(socialIdFK);
-            return user ?? null;
+            if (user == null)
+            {
+                return null;
+            }
+            
+            return _mapper.Map<UserDto>(user);
         }
 
-        public bool EditUser(User user)
+        public bool EditUser(UserDto userDto)
         {
+            var user = _mapper.Map<User>(userDto);
             _userRepository.UpdateUser(user);
             return true;
         }
