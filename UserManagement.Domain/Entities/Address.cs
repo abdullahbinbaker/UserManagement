@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace UserManagement.Domain.Entities
+﻿namespace UserManagement.Domain.Entities
 {
     public class Address
     {
@@ -12,7 +8,7 @@ namespace UserManagement.Domain.Entities
         public string HouseNo { get; set; }
         public string Country { get; set; }
 
-        public long SocialIdFK { get; set; }
+        public int UserId { get; set; }
         public User User { get; set; }
     }
 }

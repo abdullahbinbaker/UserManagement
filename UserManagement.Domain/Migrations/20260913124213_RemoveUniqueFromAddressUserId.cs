@@ -5,20 +5,19 @@
 namespace UserManagement.Domain.Migrations
 {
     /// <inheritdoc />
-    public partial class addEmailClusteredFalse : Migration
+    public partial class RemoveUniqueFromAddressUserId : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropIndex(
-                name: "IX_Users_Email",
-                table: "Users");
+                name: "IX_Address_UserId",
+                table: "Address");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_Email",
-                table: "Users",
-                column: "Email",
-                unique: true)
+                name: "IX_Address_UserId",
+                table: "Address",
+                column: "UserId")
                 .Annotation("SqlServer:Clustered", false);
         }
 
@@ -26,14 +25,15 @@ namespace UserManagement.Domain.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropIndex(
-                name: "IX_Users_Email",
-                table: "Users");
+                name: "IX_Address_UserId",
+                table: "Address");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_Email",
-                table: "Users",
-                column: "Email",
-                unique: true);
+                name: "IX_Address_UserId",
+                table: "Address",
+                column: "UserId",
+                unique: true)
+                .Annotation("SqlServer:Clustered", false);
         }
     }
 }

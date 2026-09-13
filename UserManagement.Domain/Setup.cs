@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using UserManagement.Domain.Data;
 using UserManagement.Domain.Repositories;
+using UserManagement.Domain.Repository;
 
 
 namespace UserManagement.Domain;
@@ -15,6 +16,7 @@ public static class Setup
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IAddressRepository, AddressRepository>();
         return services;
     }
 }

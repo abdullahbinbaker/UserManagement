@@ -12,15 +12,15 @@ using UserManagement.Domain.Data;
 namespace UserManagement.Domain.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260907110141_addAddressUserRelationship")]
-    partial class addAddressUserRelationship
+    [Migration("20260913124213_RemoveUniqueFromAddressUserId")]
+    partial class RemoveUniqueFromAddressUserId
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.11")
+                .HasAnnotation("ProductVersion", "10.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -48,28 +48,30 @@ namespace UserManagement.Domain.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<long>("SocialIdFK")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("StreetName")
                         .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("SocialIdFK");
+                    b.HasIndex("UserId");
 
-                    b.ToTable("Address");
+                    SqlServerIndexBuilderExtensions.IsClustered(b.HasIndex("UserId"), false);
+
+                    b.ToTable("Address", (string)null);
                 });
 
             modelBuilder.Entity("UserManagement.Domain.Entities.User", b =>
                 {
-                    b.Property<long>("SocialIdFK")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("SocialIdFK"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("BirthDate")
                         .HasColumnType("datetime2");
@@ -94,10 +96,20 @@ namespace UserManagement.Domain.Migrations
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
-                    b.HasKey("SocialIdFK");
+                    b.Property<long>("SocialIdFK")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("Email")
                         .IsUnique();
+
+                    SqlServerIndexBuilderExtensions.IsClustered(b.HasIndex("Email"), false);
+
+                    b.HasIndex("SocialIdFK")
+                        .IsUnique();
+
+                    SqlServerIndexBuilderExtensions.IsClustered(b.HasIndex("SocialIdFK"), false);
 
                     b.ToTable("Users");
                 });
@@ -106,7 +118,7 @@ namespace UserManagement.Domain.Migrations
                 {
                     b.HasOne("UserManagement.Domain.Entities.User", "User")
                         .WithMany("Addresses")
-                        .HasForeignKey("SocialIdFK")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
