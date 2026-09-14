@@ -36,7 +36,7 @@ namespace UserManagement.Domain.Repository
 
         public void UpdateAddress(Address address)
         {
-            var existingUser = _context.Addresses.FirstOrDefault(u => u.Id == address.UserId);
+            var existingUser = _context.Addresses.FirstOrDefault(u => u.Id == address.Id);
             if (existingUser != null)
             {
                 existingUser.StreetName = address.StreetName;

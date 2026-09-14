@@ -1,13 +1,15 @@
-﻿using UserManagement.Domain.Entities;
-using UserManagement.Domain.Repositories;
+﻿using AutoMapper;
+using Microsoft.Extensions.Logging;
 using UserManagement.Application.DTOs;
-using AutoMapper;
+using UserManagement.Domain.Entities;
+using UserManagement.Domain.Repositories;
 namespace UserManagement.Application.Services
 {
     public class UserService : IUserService
     {
         public readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
+        
         public UserService(IUserRepository userRepository, IMapper mapper)
         {
             _userRepository = userRepository;
@@ -16,8 +18,10 @@ namespace UserManagement.Application.Services
 
         public bool CreateUser(UserDto userDto)
         {
+           
             var user = _mapper.Map<User>(userDto); 
             _userRepository.AddUser(user);
+           
             return true;
         }
 

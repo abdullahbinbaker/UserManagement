@@ -32,6 +32,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             entity.Property(a => a.City).IsRequired().HasMaxLength(100);
             entity.Property(a => a.HouseNo).IsRequired().HasMaxLength(20);
             entity.Property(a => a.Country).IsRequired().HasMaxLength(100);
+            entity.Property(a => a.Id)
+           .ValueGeneratedOnAdd();
             entity.HasOne(a => a.User)
                   .WithMany(u => u.Addresses)
                   .HasForeignKey(a => a.UserId)

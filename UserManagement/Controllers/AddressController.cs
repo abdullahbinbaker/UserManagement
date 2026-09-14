@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using UserManagement.Application.DTOs;
 using UserManagement.Application.Services;
-using Microsoft.AspNetCore.Authorization;
-using UserManagement.Domain.Entities;
 
 namespace UserManagement.Controllers
 {
@@ -19,7 +18,7 @@ namespace UserManagement.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateAddress(AddressDto address)
+        public IActionResult CreateAddress(List<AddressDto> address)
         {
             var result = _addressService.CreateAddress(address);
             if (result == false)
@@ -39,7 +38,7 @@ namespace UserManagement.Controllers
             return Ok(address);
         }
         [HttpPut]
-        public IActionResult EditAddress(AddressDto address)
+        public IActionResult EditAddress(EditAddressDto address)
         {
             var result = _addressService.EditAddress(address);
             if (result == false)
@@ -48,10 +47,10 @@ namespace UserManagement.Controllers
             }
             return Ok("Address updated successfully.");
         }
-        [HttpDelete("{socialIdFK}")]
-        public IActionResult DeleteAddress(long socialIdFK)
+        [HttpDelete("{socialIdFK}/{AddressId}")]
+        public IActionResult DeleteAddress(long socialIdFK,int AddressId)
         {
-            var result = _addressService.RemoveAddress(socialIdFK);
+            var result = _addressService.RemoveAddress(socialIdFK,AddressId );
             if (result == false)
             {
                 return BadRequest("Address could not be deleted.");

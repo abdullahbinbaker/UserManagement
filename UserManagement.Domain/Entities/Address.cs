@@ -1,7 +1,10 @@
-﻿namespace UserManagement.Domain.Entities
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace UserManagement.Domain.Entities
 {
     public class Address
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string StreetName { get; set; }
         public string City { get; set; }

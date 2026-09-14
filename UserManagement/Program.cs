@@ -1,8 +1,17 @@
 using UserManagement.Application;
 using UserManagement.Domain;
 using UserManagement.Integration;
+using Serilog;
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .WriteTo.Console()
+    .WriteTo.File(path: "logs/log-.txt",
+                       rollingInterval: RollingInterval.Day)
+    .CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Host.UseSerilog();
 
 // Add services to the container.
 
@@ -16,6 +25,7 @@ builder.Services.AddApplicationLayer();
 
 var app = builder.Build();
 
+app.UseSerilogRequestLogging();
 // Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())
 //{
