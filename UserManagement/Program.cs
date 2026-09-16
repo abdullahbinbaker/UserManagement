@@ -2,6 +2,7 @@ using UserManagement.Application;
 using UserManagement.Domain;
 using UserManagement.Integration;
 using Serilog;
+using Microsoft.AspNetCore.Diagnostics;
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Information()
@@ -25,7 +26,7 @@ builder.Services.AddApplicationLayer();
 
 var app = builder.Build();
 
-app.UseSerilogRequestLogging();
+
 // Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())
 //{
@@ -33,10 +34,20 @@ app.UseSerilogRequestLogging();
     app.UseSwaggerUI();
 //}
 
+
+app.UseSerilogRequestLogging();
 app.UseHttpsRedirection();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
+
+
 
 //app.UseAuthorization();
+
 
 app.MapControllers();
 
 app.Run();
+
+
+
