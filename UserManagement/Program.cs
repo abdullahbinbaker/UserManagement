@@ -3,6 +3,8 @@ using UserManagement.Domain;
 using UserManagement.Integration;
 using Serilog;
 using Microsoft.AspNetCore.Diagnostics;
+using UserManagement.Middleware;
+using UserManagement.ApiKay;
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Information()
@@ -18,7 +20,10 @@ builder.Host.UseSerilog();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.OperationFilter<ApiKayHeader>();
+});
 
 builder.Services.AddDomainLayer(builder.Configuration);
 builder.Services.AddIntegrationLayer();
@@ -33,13 +38,10 @@ var app = builder.Build();
     app.UseSwagger();
     app.UseSwaggerUI();
 //}
-
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseSerilogRequestLogging();
 app.UseHttpsRedirection();
-app.UseMiddleware<ExceptionHandlingMiddleware>();
-
-
 
 
 //app.UseAuthorization();

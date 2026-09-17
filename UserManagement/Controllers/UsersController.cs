@@ -5,7 +5,7 @@ using UserManagement.Application.Services;
 namespace UserManagement.Controllers;
 
 [ApiController]
-[AllowAnonymous]
+[Authorize]
 [Route("api/[controller]")]
 public class UsersController : ControllerBase
 {
